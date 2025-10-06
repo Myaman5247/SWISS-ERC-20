@@ -2,21 +2,17 @@
 "name": "SWISS-ERC-20 Dev Environment",
 "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
 
-// Mount the Docker socket so the Codespace can talk to the host Docker daemon
-"mounts": [
-"source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
-],
-
-// Optional: add useful features like Git, Node, and Docker CLI
+// Enable Docker daemon inside the Codespace (Docker-in-Docker)
 "features": {
-"ghcr.io/devcontainers/features/docker-in-docker:2": {},
+"ghcr.io/devcontainers/features/docker-in-docker:2": {
+"version": "latest"
+},
 "ghcr.io/devcontainers/features/git:1": {},
 "ghcr.io/devcontainers/features/node:1": {
 "version": "lts"
 }
 },
 
-// Optional settings (VS Code preferences)
 "customizations": {
 "vscode": {
 "settings": {
@@ -24,12 +20,12 @@
 },
 "extensions": [
 "ms-azuretools.vscode-docker",
-"ms-vscode.remote-repositories",
 "esbenp.prettier-vscode"
 ]
 }
 },
 
-// Run on startup (useful if you want Docker to initialize)
-"postStartCommand": "docker version || echo 'Docker not accessible yet — check socket mount or rebuild container.'"
+// Start Docker daemon automatically after container launch
+"postStartCommand": "sudo service docker start && docker version"
 }
+
